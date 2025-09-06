@@ -1,17 +1,16 @@
-// src/Dashboard.jsx
+// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { MdShoppingCart, MdFastfood, MdLocalPizza, MdCake, MdLocalDrink, MdMenu, MdAddShoppingCart, MdRemoveShoppingCart, MdPerson, MdListAlt, MdInfo, MdCheck } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { MdShoppingCart, MdFastfood, MdLocalPizza, MdCake, MdLocalDrink, MdPerson, MdListAlt, MdInfo, MdCheck, MdAddShoppingCart, MdRemoveShoppingCart, MdSearch } from 'react-icons/md';
 import './Dashboard.css';
+import { useCarrinho } from '../context/CarrinhoContext'; // já está importado
 
 const Dashboard = () => {
-  const [cartItems, setCartItems] = useState([]);
+  // Adicione removeFromCart ao destructuring do contexto
+  const { cartItems, addToCart, decrementItem } = useCarrinho();
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  // A lógica de "limpar carrinho" ao focar a tela foi removida,
-  // pois não se aplica da mesma forma a um SPA (Single-Page Application) web.
-  // Você controlaria isso com a lógica de roteamento, se necessário.
 
   const categories = [
     { name: 'Todos', icon: MdFastfood },
@@ -22,11 +21,11 @@ const Dashboard = () => {
 
   const [products] = useState([
     { id: 1, name: 'Pão Francês', price: 'R$ 0,50', category: 'Salgados', stock: 30, image: 'https://redemix.vteximg.com.br/arquivos/ids/214544-1000-1000/6914.jpg?v=638351307421600000' },
-    { id: 2, name: 'Bolo de Chocolate', price: 'R$ 15,00', category: 'Doces', stock: 7, image: null },
+    { id: 2, name: 'Bolo de Chocolate', price: 'R$ 15,00', category: 'Doces', stock: 7, image: 'https://pt.petitchef.com/imgupl/recipe/bolo-de-chocolate-humido-e-fofinho--lg-454177p704082.webp' },
     { id: 3, name: 'Croissant', price: 'R$ 4,50', category: 'Salgados', stock: 18, image: null },
     { id: 4, name: 'Torta de Frango', price: 'R$ 8,00', category: 'Salgados', stock: 13, image: null },
-    { id: 5, name: 'Café Especial', price: 'R$ 5,00', category: 'Bebidas', stock: 30, image: null },
-    { id: 6, name: 'Sonho', price: 'R$ 3,50', category: 'Doces', stock: 6, image: null },
+    { id: 5, name: 'Café Especial', price: 'R$ 5,00', category: 'Bebidas', stock: 30, image: 'data:image/jpeg;base64,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' },
+    { id: 6, name: 'Sonho', price: 'R$ 3,50', category: 'Doces', stock: 6, image: 'https://lirp.cdn-website.com/33406c6e/dms3rep/multi/opt/Untitled-1-640w.jpg' },
     { id: 7, name: 'Pão de Queijo', price: 'R$ 1,00', category: 'Salgados', stock: 20, image: null },
     { id: 8, name: 'Biscoito Caseiro', price: 'R$ 2,50', category: 'Doces', stock: 16, image: null },
     { id: 9, name: 'Suco Natural', price: 'R$ 6,00', category: 'Bebidas', stock: 8, image: null },
@@ -40,40 +39,9 @@ const Dashboard = () => {
     return category ? category.icon : MdFastfood;
   };
 
-  const addToCart = (product) => {
-    const cartItem = cartItems.find(item => item.id === product.id);
-    const currentQuantity = cartItem ? cartItem.quantity : 0;
-    
-    if (currentQuantity >= product.stock) {
-      alert('Estoque Insuficiente! Desculpe, não há mais ' + product.name + ' disponível.');
-      return;
-    }
-
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevItems, { ...product, quantity: 1 }];
-    });
-  };
-
-  const removeFromCart = (product) => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      if (existingItem && existingItem.quantity > 1) {
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        );
-      }
-      return prevItems.filter(item => item.id !== product.id);
-    });
+  // Função para adicionar ao carrinho usando o contexto
+  const handleAddToCart = (product) => {
+    addToCart(product);
   };
 
   useEffect(() => {
@@ -146,7 +114,7 @@ const Dashboard = () => {
             <>
               <button 
                 className="cart-button" 
-                onClick={() => addToCart(item)}
+                onClick={() => handleAddToCart(item)}
                 disabled={itemQuantity >= item.stock}
               >
                 <MdAddShoppingCart 
@@ -158,7 +126,7 @@ const Dashboard = () => {
               {itemQuantity > 0 && (
                 <button 
                   className="remove-button" 
-                  onClick={() => removeFromCart(item)}
+                  onClick={() => decrementItem(item.id)}
                 >
                   <MdRemoveShoppingCart size={24} color="#ff4444" />
                 </button>
@@ -176,38 +144,39 @@ const Dashboard = () => {
     return sum + (price * (item.quantity || 1));
   }, 0);
 
-  // Funções de navegação foram substituídas por alerts para fins de demonstração
+  // Passo 4: Navegação simplificada
   const navigateToCart = () => {
-    alert("Navegando para o carrinho. Em um projeto real, usaria um Router aqui.");
+    navigate('/carrinho');
   };
+
   const navigateToProfile = () => {
-    setMenuVisible(false);
-    alert("Navegando para o perfil.");
+    navigate('/minha-conta');
   };
-  const navigateToSobre = () => {
-    setMenuVisible(false);
-    alert("Navegando para a página 'Sobre'.");
-  };
+
   const navigateToPedidos = () => {
-    setMenuVisible(false);
-    alert("Navegando para a página 'Pedidos'.");
+    navigate('/pedidos');
   };
 
   return (
-    <div className="container">
-      <div className="header">
-        <button className="menu-button" onClick={() => setMenuVisible(true)}>
-          <MdMenu size={28} />
+    <div className="main-container">
+      {/* Cabeçalho */}
+      <div className="dashboard-header">
+        <button className="dashboard-profile-icon" onClick={navigateToProfile}>
+          <MdPerson size={26} />
         </button>
 
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Buscar Itens do Menu"
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-        <button className="header-cart-icon" onClick={navigateToCart}>
+        <div className="dashboard-search-container">
+          <MdSearch size={24} color="#ccc" className="dashboard-search-icon" />
+          <input
+            type="text"
+            className="dashboard-search-input"
+            placeholder="Buscar Itens do Menu"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+        </div>
+        
+        <button className="dashboard-cart-icon" onClick={navigateToCart}>
           <MdShoppingCart size={26} />
           {cartItems.length > 0 && (
             <div className="cart-badge">
@@ -217,63 +186,52 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {menuVisible && (
-        <div className="modal-overlay">
-          <div className="menu-content">
-            <div className="menu-header">
-              <p className="menu-title">Categorias</p>
-            </div>
-            
-            {categories.map((category) => {
-              const CategoryIcon = category.icon;
-              return (
-                <button
-                  key={category.name}
-                  className={`category-menu-item ${selectedCategory === category.name ? 'selected-category-item' : ''}`}
-                  onClick={() => {
-                    setSelectedCategory(category.name);
-                    setMenuVisible(false);
-                  }}
-                >
-                  <CategoryIcon size={24} />
-                  <p className="category-menu-text">{category.name}</p>
-                  {selectedCategory === category.name && (
-                    <MdCheck size={20} />
-                  )}
-                </button>
-              );
-            })}
-            
-            <div className="divider" />
-            
-            <button className="menu-option" onClick={navigateToProfile}>
-              <MdPerson size={24} />
-              <p className="menu-option-text">Minha Conta</p>
-            </button>
-
-            <button className="menu-option" onClick={navigateToPedidos}>
-              <MdListAlt size={24} />
-              <p className="menu-option-text">Meus Pedidos</p>
-            </button>
-
-            <button className="menu-option" onClick={navigateToSobre}>
-              <MdInfo size={24} />
-              <p className="menu-option-text">Sobre</p>
-            </button>
-          </div>
-          <div className="menu-overlay" onClick={() => setMenuVisible(false)} />
+      {/* Conteúdo Principal (Sidebar e Lista de Produtos) */}
+      <div className="content-container">
+        <div className="sidebar">
+          <h3 className="sidebar-title">Categorias</h3>
+          {categories.map((category) => {
+            const CategoryIcon = category.icon;
+            return (
+              <button
+                key={category.name}
+                className={`category-item ${selectedCategory === category.name ? 'selected-category-item' : ''}`}
+                onClick={() => setSelectedCategory(category.name)}
+              >
+                <CategoryIcon size={24} />
+                <p className="category-text">{category.name}</p>
+                {selectedCategory === category.name && (
+                  <MdCheck size={20} />
+                )}
+              </button>
+            );
+          })}
+          
+          <div className="dashboard-sidebar-divider" />
+          
+          <h3 className="sidebar-title">Outros</h3>
+          <button className="category-item" onClick={navigateToPedidos}>
+            <MdListAlt size={24} />
+            <p className="category-text">Pedidos</p>
+          </button>
+          <button className="category-item" onClick={() => navigate('/sobre')}>
+            <MdInfo size={24} />
+            <p className="category-text">Sobre</p>
+          </button>
         </div>
-      )}
 
-      <div className="product-list">
-        {filteredProducts.map(renderItem)}
+        <div className="product-section">
+          <div className="product-list">
+            {filteredProducts.map(renderItem)}
+          </div>
+        </div>
       </div>
 
       {totalItems > 0 && (
-        <div className="summary-container">
-          <div className="summary-text-container">
-            <p className="summary-text">VALOR TOTAL:</p>
-            <p className="summary-price">R$ {totalPrice.toFixed(2)} / {totalItems} {totalItems === 1 ? 'Item' : 'Itens'}</p>
+        <div className="dashboard-summary-container">
+          <div className="dashboard-summary-text-container">
+            <p className="dashboard-summary-text">VALOR TOTAL:</p>
+            <p className="dashboard-summary-price">R$ {totalPrice.toFixed(2)} / {totalItems} {totalItems === 1 ? 'Item' : 'Itens'}</p>
           </div>
           
           <button 

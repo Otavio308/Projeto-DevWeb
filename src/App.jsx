@@ -1,14 +1,25 @@
 // src/App.jsx
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import Carrinho from './pages/Carrinho';
+import Pedidos from './pages/Pedidos';
+import DetalhesPedido from './pages/DetalhesPedidos';
+import { CarrinhoProvider } from './context/CarrinhoContext';
 
-// Lembre-se de ajustar o caminho se o seu arquivo Dashboard.jsx estiver em outra pasta
-import Dashboard from './pages/Dashboard'; 
-
-function App() {
+const App = () => {
   return (
-    <div>
-      <Dashboard />
-    </div>
+    <BrowserRouter>
+      <CarrinhoProvider>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/carrinho" element={<Carrinho />} />
+          <Route path="/pedidos" element={<Pedidos />} />
+          <Route path="/pedidos/:id" element={<DetalhesPedido />} />
+        </Routes>
+      </CarrinhoProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

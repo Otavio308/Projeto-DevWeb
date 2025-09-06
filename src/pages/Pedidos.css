@@ -1,0 +1,114 @@
+/* src/pages/Pedidos.css */
+.pedidos-container {
+  min-height: 100vh;
+  background-color: #e0e0e0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.pedidos-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #03cec4;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pedidos-title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 26px; /* Para centralizar o título */
+}
+
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.pedidos-content {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pedido-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-header {
+  flex: 1;
+}
+
+.pedido-numero {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.pedido-data {
+  font-size: 12px;
+  color: #666;
+  margin: 2px 0 0;
+}
+
+.pedido-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 10px;
+}
+
+.pedido-total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0FC2C0;
+  margin: 0;
+}
+
+.pedido-status {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.status-text {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+  color: #333;
+}
+
+.details-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.details-button:hover {
+  transform: scale(1.1);
+}
+
+.empty-pedidos {
+  text-align: center;
+  color: #999;
+  margin-top: 50px;
+}
+
+.empty-pedidos p {
+  font-size: 18px;
+}
