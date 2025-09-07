@@ -1,4 +1,4 @@
-Padaria Digital: Sistema de Cardápio e Pedidos Online
+Sistema de Cardápio e Pedidos Online
 Sobre o Projeto
 Este projeto é um sistema de e-commerce e cardápio digital desenvolvido como parte da disciplina de Desenvolvimento Web do curso de Sistemas de Informação na Faculdade Wyden Unifacimp.
 
@@ -66,7 +66,6 @@ yarn start
 A aplicação estará disponível em http://localhost:3000.
 
 📸 Telas do Aplicativo
-(Aqui você pode inserir as imagens das telas que você tirou. Crie uma pasta chamada assets ou images no seu repositório, coloque as imagens lá e use a sintaxe Markdown para mostrá-las aqui. Por exemplo: ![Dashboard](assets/dashboard.png))
 
 Dashboard:
 (Insira sua imagem aqui)
@@ -79,5 +78,5 @@ Histórico de Pedidos:
 ![Pedidos](assets/pedidos.png)
 
 Tela de Login/Cadastro:
-![Login](assets/dashboard.png)
-![cadastro](assets/dashboard.png)
+![Login](assets/login.png)
+![cadastro](assets/login.png)
