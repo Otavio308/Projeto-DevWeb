@@ -68,7 +68,6 @@ A aplicação estará disponível em http://localhost:3000.
 📸 Telas do Aplicativo
 
 Dashboard:
-(Insira sua imagem aqui)
 ![Dashboard](assets/dashboard.png)
 
 Carrinho de Compras:
