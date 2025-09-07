@@ -78,4 +78,4 @@ Histórico de Pedidos:
 
 Tela de Login/Cadastro:
 ![Login](assets/login.png)
-![cadastro](assets/login.png)
+![cadastro](assets/cadastro.png)
