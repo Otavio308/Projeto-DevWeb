@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdShoppingCart, MdFastfood, MdLocalPizza, MdCake, MdLocalDrink, MdPerson, MdListAlt, MdInfo, MdCheck, MdAddShoppingCart, MdRemoveShoppingCart, MdSearch } from 'react-icons/md';
 import './Dashboard.css';
-import { useCarrinho } from '../context/CarrinhoContext'; // já está importado
+import { useCarrinho } from '../context/CarrinhoContext';
+import { useAuth } from '../context/AuthContext'; // Importa o AuthContext
 
 const Dashboard = () => {
-  // Adicione removeFromCart ao destructuring do contexto
   const { cartItems, addToCart, decrementItem } = useCarrinho();
+  const { user } = useAuth(); // Usa o AuthContext
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -150,7 +151,11 @@ const Dashboard = () => {
   };
 
   const navigateToProfile = () => {
-    navigate('/minha-conta');
+    if (user) {
+      navigate('/Perfil');
+    } else {
+      navigate('/Login');
+    }
   };
 
   const navigateToPedidos = () => {
@@ -176,11 +181,11 @@ const Dashboard = () => {
           />
         </div>
         
-        <button className="dashboard-cart-icon" onClick={navigateToCart}>
+        <button className="dashboard-cart-icon" onClick={() => navigate('/carrinho')}>
           <MdShoppingCart size={26} />
           {cartItems.length > 0 && (
             <div className="cart-badge">
-              <span>{totalItems}</span>
+              <span>{cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}</span>
             </div>
           )}
         </button>
